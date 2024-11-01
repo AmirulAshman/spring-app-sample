@@ -43,7 +43,8 @@ public class PersonController {
     HttpServletRequest servletRequest;
 
     @GetMapping("/person")
-    public ResponseEntity<BaseResponse<Page<Person>>> findAllPerson(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<BaseResponse<Page<Person>>> findAllPerson(
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         logger.info("Request: " + ObjectMapperUtil.toJson(null));
         Pageable pageable = PageRequest.of(page, size);
@@ -69,14 +70,16 @@ public class PersonController {
     }
 
     @PostMapping("/person")
-    public ResponseEntity<BaseResponse<Person>> addPerson(@RequestBody(required = true) Person request) {
+    public ResponseEntity<BaseResponse<Person>> addPerson(
+            @RequestBody(required = true) Person request) {
         logger.info("Request: " + ObjectMapperUtil.toJson(request));
         Person person = personService.addPerson(request);
         BaseResponse<Person> response = new BaseResponse<>();
         response.setMessage("Success! Person created.");
         response.setResponseCode("201");
         response.setData(person);
-        URI url = URI.create(servletRequest.getRequestURL().append('/').append(person.getId()).toString());
+        URI url = URI.create(
+                servletRequest.getRequestURL().append('/').append(person.getId()).toString());
         logger.info("Response: " + ObjectMapperUtil.toJson(response));
         return ResponseEntity.created(url).body(response);
     }

@@ -13,8 +13,8 @@ public class SwitchGamesClient {
 
     public ResponseEntity<List<Response>> callGetSwitchGamesList() {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.exchange("https://api.sampleapis.com/switch/games", HttpMethod.GET, null, new ParameterizedTypeReference<List<Response>>() {});
+        return restTemplate.exchange("https://api.sampleapis.com/switch/games", HttpMethod.GET,
+                null, new ParameterizedTypeReference<List<Response>>() {});
     }
 
-    
 }

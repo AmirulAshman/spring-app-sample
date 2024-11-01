@@ -5,7 +5,7 @@ import java.util.Map;
 
 import lombok.Data;
 
-/* Sample Data
+/** Sample Data
  * {
         "id": 827,
         "name": "Hotel Transylvania 3: Monsters Overboard",

@@ -18,15 +18,11 @@ public class SecurityConfiguration {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.withUsername("user")
-                .password(passwordEncoder.encode("password"))
-                .roles("USER")
-                .build();
+        UserDetails user = User.withUsername("user").password(passwordEncoder.encode("password"))
+                .roles("USER").build();
 
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder.encode("admin"))
-                .roles("ADMIN", "USER")
-                .build();
+        UserDetails admin = User.withUsername("admin").password(passwordEncoder.encode("admin"))
+                .roles("ADMIN", "USER").build();
 
         return new InMemoryUserDetailsManager(user, admin);
     }
@@ -34,8 +30,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(request -> request.anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults()).csrf(csrf -> csrf.disable())
-                .build();
+                .httpBasic(Customizer.withDefaults()).csrf(csrf -> csrf.disable()).build();
     }
 
     @Bean
