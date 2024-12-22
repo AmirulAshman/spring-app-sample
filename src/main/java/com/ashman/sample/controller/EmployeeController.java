@@ -3,7 +3,6 @@ package com.ashman.sample.controller;
 import java.net.URI;
 import java.util.Map;
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,97 +21,95 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ashman.sample.entity.Person;
+import com.ashman.sample.entity.Employee;
 import com.ashman.sample.model.BaseResponse;
-import com.ashman.sample.service.PersonService;
+import com.ashman.sample.service.EmployeeService;
 import com.ashman.sample.utility.ObjectMapperUtil;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(path = "/sample/api")
-public class PersonController {
+public class EmployeeController {
 
-    Logger logger = LoggerFactory.getLogger(PersonController.class);
+    Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     @Autowired
-    PersonService personService;
+    EmployeeService employeeService;
 
     @Autowired
     HttpServletRequest servletRequest;
 
-    @GetMapping("/person")
-    public ResponseEntity<BaseResponse<Page<Person>>> findAllPerson(@RequestParam(defaultValue = "0") int page,
+    @GetMapping("/employee")
+    public ResponseEntity<BaseResponse<Page<Employee>>> findAllPerson(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         logger.info("Request: " + ObjectMapperUtil.toJson(null));
         Pageable pageable = PageRequest.of(page, size);
-        Page<Person> persons = personService.findAllPerson(pageable);
-        BaseResponse<Page<Person>> response = new BaseResponse<>();
-        response.setMessage("Success! Person found.");
+        Page<Employee> persons = employeeService.findAllEmployee(pageable);
+        BaseResponse<Page<Employee>> response = new BaseResponse<>();
+        response.setMessage("Success! Employee found.");
         response.setResponseCode("200");
         response.setData(persons);
         logger.info("Response: " + response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/person/{id}")
-    public ResponseEntity<BaseResponse<Person>> viewPerson(@PathVariable UUID id) {
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<BaseResponse<Employee>> viewPerson(@PathVariable UUID id) {
         logger.info("Request: " + ObjectMapperUtil.toJson(id));
-        Person person = personService.viewPerson(id);
-        BaseResponse<Person> response = new BaseResponse<>();
-        response.setMessage("Success! Person found.");
+        Employee employee = employeeService.viewEmployee(id);
+        BaseResponse<Employee> response = new BaseResponse<>();
+        response.setMessage("Success! Employee found.");
         response.setResponseCode("200");
-        response.setData(person);
+        response.setData(employee);
         logger.info("Response: " + response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PostMapping("/person")
-    public ResponseEntity<BaseResponse<Person>> addPerson(@RequestBody(required = true) Person request) {
+    @PostMapping("/employee")
+    public ResponseEntity<BaseResponse<Employee>> addPerson(@RequestBody(required = true) Employee request) {
         logger.info("Request: " + ObjectMapperUtil.toJson(request));
-        Person person = personService.addPerson(request);
-        BaseResponse<Person> response = new BaseResponse<>();
-        response.setMessage("Success! Person created.");
+        Employee employee = employeeService.addEmployee(request);
+        BaseResponse<Employee> response = new BaseResponse<>();
+        response.setMessage("Success! Employee created.");
         response.setResponseCode("201");
-        response.setData(person);
-        URI url = URI.create(servletRequest.getRequestURL().append('/').append(person.getId()).toString());
+        response.setData(employee);
+        URI url = URI.create(servletRequest.getRequestURL().append('/').append(employee.getId()).toString());
         logger.info("Response: " + ObjectMapperUtil.toJson(response));
         return ResponseEntity.created(url).body(response);
     }
 
-    @PatchMapping("/person/{id}")
-    public ResponseEntity<BaseResponse<Person>> patchPerson(@PathVariable UUID id,
+    @PatchMapping("/employee/{id}")
+    public ResponseEntity<BaseResponse<Employee>> patchPerson(@PathVariable UUID id,
             @RequestBody(required = true) Map<String, Object> request) {
-        BaseResponse<Person> response = new BaseResponse<>();
+        BaseResponse<Employee> response = new BaseResponse<>();
         logger.info("Request: " + ObjectMapperUtil.toJson(request));
-        Person person = personService.patchPerson(id, request);
-        response.setMessage("Success! Person patched.");
+        Employee employee = employeeService.patchEmployee(id, request);
+        response.setMessage("Success! Employee patched.");
         response.setResponseCode("200");
-        response.setData(person);
+        response.setData(employee);
         logger.info("Response: " + ObjectMapperUtil.toJson(response));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping("/person/{id}")
-    public ResponseEntity<BaseResponse<Person>> updatePerson(@PathVariable UUID id,
-            @RequestBody(required = true) Person request) {
-        BaseResponse<Person> response = new BaseResponse<>();
+    @PutMapping("/employee/{id}")
+    public ResponseEntity<BaseResponse<Employee>> updatePerson(@PathVariable UUID id,
+            @RequestBody(required = true) Employee request) {
+        BaseResponse<Employee> response = new BaseResponse<>();
         logger.info("Request: " + ObjectMapperUtil.toJson(request));
-        Person person = personService.updatePerson(id, request);
-        response.setMessage("Success! Person updated.");
+        Employee employee = employeeService.updateEmployee(id, request);
+        response.setMessage("Success! Employee updated.");
         response.setResponseCode("200");
-        response.setData(person);
+        response.setData(employee);
         logger.info("Response: " + ObjectMapperUtil.toJson(response));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/person/{id}")
+    @DeleteMapping("/employee/{id}")
     public ResponseEntity<BaseResponse<UUID>> deletePerson(@PathVariable UUID id) {
         logger.info("Request: " + ObjectMapperUtil.toJson(id));
         BaseResponse<UUID> response = new BaseResponse<>();
-        personService.deletePerson(id);
-        response.setMessage("Success! Person deleted.");
+        employeeService.deleteEmployee(id);
+        response.setMessage("Success! Employee deleted.");
         response.setData(id);
         logger.info("Response: " + ObjectMapperUtil.toJson(response));
         return ResponseEntity.status(HttpStatus.OK).body(response);

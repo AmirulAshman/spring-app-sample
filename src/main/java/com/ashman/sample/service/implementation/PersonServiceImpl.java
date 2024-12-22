@@ -3,18 +3,15 @@ package com.ashman.sample.service.implementation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.ashman.sample.entity.Person;
 import com.ashman.sample.exception.InvalidFieldException;
 import com.ashman.sample.repository.PersonRepository;
 import com.ashman.sample.service.PersonService;
 import com.ashman.sample.utility.EntityUpdateUtil;
-
 import jakarta.transaction.Transactional;
 
 @Service
